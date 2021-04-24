@@ -24,6 +24,7 @@
     "types": [
       "@nuxt/types",
       "@types/node",
+      "@types/uuid",
       "@types/vuetify",
       "firebase"
     ]

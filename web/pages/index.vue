@@ -1,6 +1,7 @@
 <template>
   <v-row justify="center" align="center">
     <v-col cols="12" sm="8" md="6">
+      <v-btn @click="handleSubmit">Firestoreへのテスト登録</v-btn>
       <v-card>
         <v-card-title class="headline"> タイトル </v-card-title>
         <v-card-text>
@@ -24,8 +25,21 @@
   </v-row>
 </template>
 
-<script>
-export default {
-  components: {},
-}
+<script lang="ts">
+import { defineComponent } from '@nuxtjs/composition-api'
+import { RecipeStore } from '~/store'
+
+export default defineComponent({
+  setup() {
+    const handleSubmit = async () => {
+      await RecipeStore.testAdd().catch((err: Error) => {
+        console.log('debug', err)
+      })
+    }
+
+    return {
+      handleSubmit,
+    }
+  },
+})
 </script>
