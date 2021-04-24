@@ -1,15 +1,15 @@
 {
-  "name": "web",
+  "name": "gran-cook",
   "version": "1.0.0",
   "private": true,
   "scripts": {
-    "dev": "nuxt",
-    "build": "nuxt build",
-    "start": "nuxt start",
-    "generate": "nuxt generate",
-    "lint:js": "eslint --ext \".js,.vue\" --ignore-path .gitignore .",
-    "lint": "yarn lint:js",
-    "test": "jest"
+    "dev": "nuxt-ts",
+    "build": "nuxt-ts build",
+    "start": "nuxt-ts start",
+    "generate": "nuxt-ts generate",
+    "lint": "eslint lint --ext .js,.ts,.vue --ignore-path .gitignore .",
+    "lint:fix": "yarn lint --fix",
+    "test": "jest --config jest.config.js --coverage --verbose"
   },
   "dependencies": {
     "@nuxtjs/composition-api": "^0.23.2",
