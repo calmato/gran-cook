@@ -25,6 +25,9 @@ export default {
   buildModules: ['@nuxtjs/composition-api/module', '@nuxt/typescript-build', '@nuxtjs/vuetify'],
   modules: [],
   content: {},
+  router: {
+    middleware: ['authenticated'],
+  },
   vuetify: {
     customVariables: ['~/assets/variables.scss'],
     theme: {
