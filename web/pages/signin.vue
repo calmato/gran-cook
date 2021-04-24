@@ -7,7 +7,7 @@
           <!-- TODO: アラートの実装 -->
           <v-card rounded="32">
             <v-card-title class="justify-center">
-              <h3>管理者向けログイン</h3>
+              <h3>ログイン</h3>
             </v-card-title>
 
             <v-divider />
