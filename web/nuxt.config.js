@@ -14,16 +14,15 @@ export default {
       { name: 'viewport', content: 'width=device-width, initial-scale=1' },
       { hid: 'description', name: 'description', content: '' },
     ],
-    link: [{ rel: 'icon', type: 'image/x-icon', href: '/favicon.ico' }, { rel: 'stylesheet', href: 'https://fonts.googleapis.com/css?family=Roboto' }],
+    link: [
+      { rel: 'icon', type: 'image/x-icon', href: '/favicon.ico' },
+      { rel: 'stylesheet', href: 'https://fonts.googleapis.com/css?family=Roboto' },
+    ],
   },
   css: [],
   plugins: [],
   components: true,
-  buildModules: [
-    '@nuxt/composition-api',
-    '@nuxt/typescript-build',
-    '@nuxtjs/vuetify',
-  ],
+  buildModules: ['@nuxt/composition-api', '@nuxt/typescript-build', '@nuxtjs/vuetify'],
   modules: [],
   content: {},
   vuetify: {
