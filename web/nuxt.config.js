@@ -19,8 +19,8 @@ export default {
       { rel: 'stylesheet', href: 'https://fonts.googleapis.com/css?family=Roboto' },
     ],
   },
-  css: [],
-  plugins: [],
+  css: ['firebaseui/dist/firebaseui.css'],
+  plugins: ['~/plugins/firebase'],
   components: true,
   buildModules: ['@nuxtjs/composition-api/module', '@nuxt/typescript-build', '@nuxtjs/vuetify'],
   modules: [],
@@ -41,6 +41,11 @@ export default {
         },
       },
     },
+  },
+  env: {
+    firebaseApiKey: process.env.FIREBASE_API_KEY,
+    firebaseProjectId: process.env.FIREBASE_PROJECT_ID,
+    firebaseMessagingSenderId: process.env.FIREBASE_MESSAGING_SENDER_ID,
   },
   build: {},
 }
