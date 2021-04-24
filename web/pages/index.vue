@@ -2,9 +2,7 @@
   <v-row justify="center" align="center">
     <v-col cols="12" sm="8" md="6">
       <v-card>
-        <v-card-title class="headline">
-          タイトル
-        </v-card-title>
+        <v-card-title class="headline"> タイトル </v-card-title>
         <v-card-text>
           <v-rating
             background-color="grey lighten-2"
@@ -15,9 +13,7 @@
             value="3"
             readonly
           ></v-rating>
-          <p>
-            テキスト
-          </p>
+          <p>テキスト</p>
         </v-card-text>
         <v-card-actions>
           <v-spacer />
@@ -29,9 +25,7 @@
 </template>
 
 <script>
-
 export default {
-  components: {
-  },
+  components: {},
 }
 </script>
