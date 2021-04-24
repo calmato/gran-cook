@@ -22,7 +22,7 @@ export default {
   css: [],
   plugins: [],
   components: true,
-  buildModules: ['@nuxt/composition-api', '@nuxt/typescript-build', '@nuxtjs/vuetify'],
+  buildModules: ['@nuxtjs/composition-api/module', '@nuxt/typescript-build', '@nuxtjs/vuetify'],
   modules: [],
   content: {},
   vuetify: {
