@@ -13,11 +13,15 @@ on:
 jobs:
   ci:
     runs-on: ${{ matrix.os }}
+    defaults:
+      run:
+        shell: bash
+        working-directory: ./web
 
     strategy:
       matrix:
         os: [ubuntu-latest]
-        node: [14]
+        node: [15.4,16]
 
     steps:
       - name: Checkout 🛎
