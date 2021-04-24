@@ -42,5 +42,12 @@ export default {
       },
     },
   },
+  typescript: {
+    typeCheck: {
+      eslint: {
+        files: './**/*.{ts,js,vue}',
+      },
+    },
+  },
   build: {},
 }
