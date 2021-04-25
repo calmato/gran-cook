@@ -2,6 +2,7 @@ import colors from 'vuetify/es5/util/colors'
 
 export default {
   ssr: false,
+  srcDir: 'src',
   target: 'static',
   head: {
     titleTemplate: '%s - GranCook',
