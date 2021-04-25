@@ -2,7 +2,9 @@
 
 ## 料理検索アプリ
 
-### logo
+### Logo
+logo.png![image](https://user-images.githubusercontent.com/27718548/115983436-029a8000-a5dc-11eb-9a9d-21d7d4877c5f.png)
+
 
 ### システム概要
 このアプリでは、料理レシビの登録、レシピの検索を行うことができます。
