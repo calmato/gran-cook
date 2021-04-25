@@ -3,7 +3,7 @@
 ## 料理検索アプリ
 
 ### Logo
-logo.png![image](https://user-images.githubusercontent.com/27718548/115983436-029a8000-a5dc-11eb-9a9d-21d7d4877c5f.png)
+facebook_profile_image.png![image](https://user-images.githubusercontent.com/27718548/115984647-3331e800-a5e3-11eb-9303-d726653bda01.png)
 
 
 ### システム概要
