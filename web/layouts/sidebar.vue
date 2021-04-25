@@ -1,6 +1,6 @@
 <template>
   <v-app dark>
-    <v-navigation-drawer app clipped left>
+    <v-navigation-drawer app clipped dark left>
       <template #prepend>
         <v-list-item two-line>
           <v-list-item-content>
@@ -11,7 +11,7 @@
       </template>
       <v-divider></v-divider>
       <v-list dense>
-        <v-list-item v-for="item in items" :key="item.title">
+        <v-list-item v-for="item in items" :key="item.title" link nuxt :to="item.link">
           <v-list-item-icon>
             <v-icon>{{ item.icon }}</v-icon>
           </v-list-item-icon>
@@ -34,8 +34,8 @@ export default {
   data() {
     return {
       items: [
-        { title: 'ホーム', icon: 'mdi-home-city' },
-        { title: '料理登録', icon: 'mdi-plus-box' },
+        { title: 'レシピを調べる', icon: 'mdi-magnify', link: '/' },
+        { title: 'レシピ登録', icon: 'mdi-plus-box', link: '/new' },
       ],
     }
   },
