@@ -14,12 +14,12 @@
     "strict": true,
     "noEmit": true,
     "experimentalDecorators": true,
-    "baseUrl": ".",
+    "baseUrl": "./src",
     "paths": {
       "~/*": ["./*"],
       "@/*": ["./*"],
-      "~~/*": ["./*"],
-      "@@/*": ["./*"]
+      "~~/*": ["./../*"],
+      "@@/*": ["./../*"]
     },
     "types": [
       "@nuxt/types",
