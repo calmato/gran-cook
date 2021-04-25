@@ -1,6 +1,10 @@
 <template>
   <v-app dark>
-    <v-navigation-drawer app clipped dark left>
+    <v-app-bar absolute app clipped-right color="939393" elevate-on-scroll>
+      <v-toolbar-title>{{ title }}</v-toolbar-title>
+      <v-spacer></v-spacer>
+    </v-app-bar>
+    <v-navigation-drawer app color="#FFC107" left>
       <template #prepend>
         <v-list-item two-line>
           <v-list-item-content>
@@ -29,15 +33,42 @@
   </v-app>
 </template>
 
-<script>
-export default {
-  data() {
+<script lang="ts">
+import { computed, defineComponent, ref, SetupContext, watch } from '@nuxtjs/composition-api'
+
+export default defineComponent({
+  setup(_, { root }: SetupContext) {
+    const title = ref<string>('')
+    const current = computed(() => root.$route.path)
+
+    switch (current.value) {
+      case '/':
+        title.value = 'レシピ一覧'
+        break
+      case '/new':
+        title.value = 'レシピ登録'
+        break
+    }
+
+    watch(current, (): void => {
+      switch (current.value) {
+        case '/':
+          title.value = 'レシピ一覧'
+          break
+        case '/new':
+          title.value = 'レシピ登録'
+          break
+      }
+    })
     return {
+      title,
       items: [
         { title: 'レシピを調べる', icon: 'mdi-magnify', link: '/' },
         { title: 'レシピ登録', icon: 'mdi-plus-box', link: '/new' },
       ],
     }
   },
-}
+})
 </script>
+
+function comptued(arg0: () => string) { throw new Error('Function not implemented.') }
