@@ -26,12 +26,11 @@
             label="画像を選択"
             filled
             prepend-icon="mdi-camera"
+            @change="onImagePicked"
           ></v-file-input>
         </v-col>
       </v-row>
-      <div v-if="url">
-        <img :src="url" />
-      </div>
+      <img v-if="uploadImageUrl" :src="uploadImageUrl" width="auto" height="200" />
     </v-container>
     <div class="text-center">
       <v-btn large color="#FFC107" dark> レシピを登録 </v-btn>
@@ -44,5 +43,27 @@ import { defineComponent } from '@nuxtjs/composition-api'
 
 export default defineComponent({
   layout: 'sidebar',
+  data() {
+    return {
+      input_image: null,
+      uploadImageUrl: '',
+    }
+  },
+  methods: {
+    onImagePicked(file) {
+      if (file !== undefined && file !== null) {
+        if (file.name.lastIndexOf('.') <= 0) {
+          return
+        }
+        const fr = new FileReader()
+        fr.readAsDataURL(file)
+        fr.addEventListener('load', () => {
+          this.uploadImageUrl = fr.result
+        })
+      } else {
+        this.uploadImageUrl = ''
+      }
+    },
+  },
 })
 </script>
