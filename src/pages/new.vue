@@ -21,9 +21,17 @@
           ></v-rating>
         </v-col>
         <v-col cols="12" md="4" class="my-2">
-          <v-file-input label="画像を選択" filled prepend-icon="mdi-camera"></v-file-input>
+          <v-file-input
+            accept="image/png, image/jpeg"
+            label="画像を選択"
+            filled
+            prepend-icon="mdi-camera"
+          ></v-file-input>
         </v-col>
       </v-row>
+      <div v-if="url">
+        <img :src="url" />
+      </div>
     </v-container>
     <div class="text-center">
       <v-btn large color="#FFC107" dark> レシピを登録 </v-btn>
