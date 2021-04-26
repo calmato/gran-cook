@@ -4,9 +4,12 @@
       <v-toolbar-title>{{ title }}</v-toolbar-title>
       <v-spacer></v-spacer>
     </v-app-bar>
-    <v-navigation-drawer app color="#FFC107" left>
+    <v-navigation-drawer app color="#FFA594" left>
       <template #prepend>
         <v-list-item two-line>
+          <v-list-item-avatar>
+            <v-img src="/logo.png"> </v-img>
+          </v-list-item-avatar>
           <v-list-item-content>
             <v-list-item-title>Gran Cook</v-list-item-title>
             <v-list-item-subtitle>レシピ管理アプリ</v-list-item-subtitle>

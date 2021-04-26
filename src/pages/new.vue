@@ -26,7 +26,7 @@
       </v-row>
     </v-container>
     <div class="text-center">
-      <v-btn large color="#FFA594" dark> レシピを登録 </v-btn>
+      <v-btn large color="#FFC107" dark> レシピを登録 </v-btn>
     </div>
   </v-form>
 </template>
