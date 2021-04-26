@@ -65,6 +65,7 @@ export default defineComponent({
       items: [
         { title: 'レシピを調べる', icon: 'mdi-magnify', link: '/' },
         { title: 'レシピ登録', icon: 'mdi-plus-box', link: '/new' },
+        { title: 'ログアウト', icon: 'mdi-exit-to-app', link: '' },
       ],
     }
   },
