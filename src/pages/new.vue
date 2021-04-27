@@ -3,17 +3,17 @@
     <v-container>
       <v-row>
         <v-col cols="12">
-          <v-text-field label="料理名" single-line full-width></v-text-field>
+          <v-text-field v-model="form.title" label="料理名" single-line full-width></v-text-field>
         </v-col>
         <v-col cols="12">
-          <v-textarea label="感想" full-width single-lin></v-textarea>
+          <v-textarea v-model="form.impressions" label="感想" full-width single-lin></v-textarea>
         </v-col>
         <v-col cols="12">
-          <v-textarea label="レシピ" full-width single-line> </v-textarea>
+          <v-textarea v-model="form.recipe" label="レシピ" full-width single-line> </v-textarea>
         </v-col>
         <v-col cols="12" class="my-2">
           <v-rating
-            v-model="rating"
+            v-model="form.rate"
             color="#FFC107"
             icon-label="custom icon label text {0} of {1}"
             hover
@@ -22,6 +22,7 @@
         </v-col>
         <v-col cols="12" md="4" class="my-2">
           <v-file-input
+            v-model="form.image"
             accept="image/png, image/jpeg"
             label="画像を選択"
             filled
@@ -33,24 +34,29 @@
       <img v-if="uploadImageUrl" :src="uploadImageUrl" width="auto" height="200" />
     </v-container>
     <div class="text-center">
-      <v-btn large color="#FFC107" dark> レシピを登録 </v-btn>
+      <v-btn large color="#FFC107" dark @click="hundleSubmit"> レシピを登録 </v-btn>
     </div>
   </v-form>
 </template>
 
 <script lang="ts">
-import { defineComponent } from '@nuxtjs/composition-api'
+import { defineComponent, reactive, ref } from '@nuxtjs/composition-api'
+import { INewRecipeForm } from '~/types/forms'
 
 export default defineComponent({
   layout: 'sidebar',
-  data() {
-    return {
-      input_image: null,
-      uploadImageUrl: '',
-    }
-  },
-  methods: {
-    onImagePicked(file) {
+  setup() {
+    const inputImage = ref<string>('')
+    const uploadImageUrl = ref<any>('')
+    const form = reactive<INewRecipeForm>({
+      title: '',
+      impressions: '',
+      recipe: '',
+      rate: 3,
+      image: null,
+    })
+
+    const onImagePicked = (file) => {
       if (file !== undefined && file !== null) {
         if (file.name.lastIndexOf('.') <= 0) {
           return
@@ -58,12 +64,24 @@ export default defineComponent({
         const fr = new FileReader()
         fr.readAsDataURL(file)
         fr.addEventListener('load', () => {
-          this.uploadImageUrl = fr.result
+          uploadImageUrl.value = fr.result
         })
       } else {
-        this.uploadImageUrl = ''
+        uploadImageUrl.value = ''
       }
-    },
+    }
+
+    const hundleSubmit = () => {
+      console.log('debug', form)
+    }
+
+    return {
+      inputImage,
+      uploadImageUrl,
+      onImagePicked,
+      form,
+      hundleSubmit,
+    }
   },
 })
 </script>
