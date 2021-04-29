@@ -1,7 +1,8 @@
 import { Module, VuexModule, Mutation, Action } from 'vuex-module-decorators'
 import { v4 as uuidv4 } from 'uuid'
 import firebase from '~/plugins/firebase'
-import { IRecipe, IRecipeState } from '~/types/store'
+import { IRecipeNewForm } from '~/types/forms'
+import { IRecipe, IRecipeTest, IRecipeState } from '~/types/store'
 
 const initialState: IRecipeState = {
   recipes: [],
@@ -34,7 +35,7 @@ export default class RecipeModule extends VuexModule {
     const id: string = uuidv4()
     const current = Date.now()
 
-    const data: IRecipe = {
+    const data: IRecipeTest = {
       id,
       title: 'テスト調理レシピ',
       createdAt: current,
@@ -49,7 +50,37 @@ export default class RecipeModule extends VuexModule {
       .then((res) => {
         console.log('debug', 'success', res)
       })
-      .catch((err: Error) => {
+      .catch((err: any) => {
+        throw err
+      })
+  }
+
+  @Action({ rawError: true })
+  public async recipeAdd(params: IRecipeNewForm): Promise<void> {
+    const id: string = uuidv4()
+    const current = Date.now()
+    const { title, impressions, recipe, rate, image } = params
+
+    const req: IRecipe = {
+      id,
+      title,
+      impressions,
+      recipe,
+      rate,
+      image,
+      createdAt: current,
+      updatedAt: current,
+    }
+
+    await firebase
+      .firestore()
+      .collection('recipes')
+      .doc(id)
+      .set(req)
+      .then((res) => {
+        console.log('debug', 'success', res)
+      })
+      .catch((err: any) => {
         throw err
       })
   }

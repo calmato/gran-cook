@@ -41,14 +41,15 @@
 
 <script lang="ts">
 import { defineComponent, reactive, ref } from '@nuxtjs/composition-api'
-import { INewRecipeForm } from '~/types/forms'
+import { IRecipeNewForm } from '~/types/forms'
+import { RecipeStore } from '~/store'
 
 export default defineComponent({
   layout: 'sidebar',
   setup() {
     const inputImage = ref<string>('')
     const uploadImageUrl = ref<any>('')
-    const form = reactive<INewRecipeForm>({
+    const form = reactive<IRecipeNewForm>({
       title: '',
       impressions: '',
       recipe: '',
@@ -71,8 +72,10 @@ export default defineComponent({
       }
     }
 
-    const hundleSubmit = () => {
-      console.log('debug', form)
+    const hundleSubmit = async () => {
+      await RecipeStore.recipeAdd(form).catch((err: Error) => {
+        console.log('debug', form, err)
+      })
     }
 
     return {
