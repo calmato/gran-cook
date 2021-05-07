@@ -4,7 +4,7 @@ export interface IRecipe {
   impressions: string
   recipe: string
   rate: number
-  image: File
+  imageUrl: string
   createdAt: number
   updatedAt: number
 }

@@ -22,7 +22,6 @@
         </v-col>
         <v-col cols="12" md="4" class="my-2">
           <v-file-input
-            v-model="form.image"
             accept="image/png, image/jpeg"
             label="画像を選択"
             filled
@@ -49,15 +48,18 @@ export default defineComponent({
   setup() {
     const inputImage = ref<string>('')
     const uploadImageUrl = ref<any>('')
+    const imageData = ref<File>()
     const form = reactive<IRecipeNewForm>({
       title: '',
       impressions: '',
       recipe: '',
       rate: 3,
-      image: null,
+      imageUrl: '',
     })
 
-    const onImagePicked = (file) => {
+    const onImagePicked = (file: File) => {
+      imageData.value = file
+      console.log(imageData)
       if (file !== undefined && file !== null) {
         if (file.name.lastIndexOf('.') <= 0) {
           return
@@ -73,7 +75,9 @@ export default defineComponent({
     }
 
     const hundleSubmit = async () => {
-      await RecipeStore.recipeAdd(form).catch((err: Error) => {
+      // Upload to cloud strage
+      // Register data
+      await RecipeStore.recipeAdd({ params: form, imageData }).catch((err: Error) => {
         console.log('debug', form, err)
       })
     }

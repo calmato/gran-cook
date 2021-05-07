@@ -1,7 +1,6 @@
 import { Module, VuexModule, Mutation, Action } from 'vuex-module-decorators'
 import { v4 as uuidv4 } from 'uuid'
 import firebase from '~/plugins/firebase'
-import { IRecipeNewForm } from '~/types/forms'
 import { IRecipe, IRecipeTest, IRecipeState } from '~/types/store'
 
 const initialState: IRecipeState = {
@@ -56,10 +55,25 @@ export default class RecipeModule extends VuexModule {
   }
 
   @Action({ rawError: true })
-  public async recipeAdd(params: IRecipeNewForm): Promise<void> {
+  public async recipeAdd({ params, imageData }: any): Promise<void> {
     const id: string = uuidv4()
     const current = Date.now()
-    const { title, impressions, recipe, rate, image } = params
+    let resultUrl: any = ''
+    const { title, impressions, recipe, rate } = params
+    const metadata = { contentType: imageData.type }
+    const storage = firebase.storage()
+    const storageDoc = storage.ref().child('recipes/' + id + '/images/' + imageData.value.name)
+    await storageDoc
+      .put(imageData.value, metadata)
+      .then(async () => {
+        // Get upload image data URL
+        await storageDoc.getDownloadURL().then((res) => {
+          resultUrl = res
+        })
+      })
+      .catch((err: any) => {
+        console.log(err)
+      })
 
     const req: IRecipe = {
       id,
@@ -67,7 +81,7 @@ export default class RecipeModule extends VuexModule {
       impressions,
       recipe,
       rate,
-      image,
+      imageUrl: resultUrl,
       createdAt: current,
       updatedAt: current,
     }

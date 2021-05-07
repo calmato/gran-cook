@@ -6,5 +6,5 @@ export interface IRecipeNewForm {
   impressions: string
   recipe: string
   rate: number
-  image: File
+  imageUrl: string
 }
