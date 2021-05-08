@@ -33,7 +33,7 @@
       <img v-if="inputFile" :src="inputFile" width="auto" height="200" />
     </v-container>
     <div class="text-center">
-      <v-btn large color="#FFC107" dark @click="hundleSubmit"> レシピを登録 </v-btn>
+      <v-btn large color="#FFC107" dark @click="handleSubmit"> レシピを登録 </v-btn>
     </div>
   </v-form>
 </template>
@@ -73,7 +73,7 @@ export default defineComponent({
       })
     }
 
-    const hundleSubmit = async () => {
+    const handleSubmit = async () => {
       await RecipeStore.uploadImage(fileData.value)
         .then(
           async (imageUrl: string): Promise<void> => {
@@ -92,7 +92,7 @@ export default defineComponent({
       fileData,
       formData,
       onImagePicked,
-      hundleSubmit,
+      handleSubmit,
     }
   },
 })
