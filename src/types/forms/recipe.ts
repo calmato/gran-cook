@@ -3,7 +3,7 @@
 // ---------------------------
 export interface IRecipeNewForm {
   title: string
-  impressions: string
+  impression: string
   recipe: string
   rate: number
   imageUrl: string

@@ -3,17 +3,17 @@
     <v-container>
       <v-row>
         <v-col cols="12">
-          <v-text-field v-model="form.title" label="料理名" single-line full-width></v-text-field>
+          <v-text-field v-model="formData.title" label="料理名" single-line full-width></v-text-field>
         </v-col>
         <v-col cols="12">
-          <v-textarea v-model="form.impressions" label="感想" full-width single-lin></v-textarea>
+          <v-textarea v-model="formData.impression" label="感想" full-width single-lin></v-textarea>
         </v-col>
         <v-col cols="12">
-          <v-textarea v-model="form.recipe" label="レシピ" full-width single-line> </v-textarea>
+          <v-textarea v-model="formData.recipe" label="レシピ" full-width single-line> </v-textarea>
         </v-col>
         <v-col cols="12" class="my-2">
           <v-rating
-            v-model="form.rate"
+            v-model="formData.rate"
             color="#FFC107"
             icon-label="custom icon label text {0} of {1}"
             hover
@@ -48,9 +48,9 @@ export default defineComponent({
     const inputImage = ref<string>('')
     const uploadImageUrl = ref<any>('')
     const imageData = ref<File>()
-    const form = reactive<IRecipeNewForm>({
+    const formData = reactive<IRecipeNewForm>({
       title: '',
-      impressions: '',
+      impression: '',
       recipe: '',
       rate: 3,
       imageUrl: '',
@@ -74,18 +74,24 @@ export default defineComponent({
     }
 
     const hundleSubmit = async () => {
-      // Upload to cloud strage
-      // Register data
-      await RecipeStore.recipeAdd({ params: form, imageData }).catch((err: Error) => {
-        console.log('debug', form, err)
-      })
+      await RecipeStore.uploadImage(imageData.value)
+        .then(
+          async (imageUrl: string): Promise<void> => {
+            formData.imageUrl = imageUrl
+
+            return await RecipeStore.addRecipe(formData)
+          }
+        )
+        .catch((err: Error) => {
+          console.log('debug', formData, err)
+        })
     }
 
     return {
       inputImage,
       uploadImageUrl,
       onImagePicked,
-      form,
+      formData,
       hundleSubmit,
     }
   },

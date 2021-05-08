@@ -1,7 +1,8 @@
 import { Module, VuexModule, Mutation, Action } from 'vuex-module-decorators'
 import { v4 as uuidv4 } from 'uuid'
 import firebase from '~/plugins/firebase'
-import { IRecipe, IRecipeTest, IRecipeState } from '~/types/store'
+import { IRecipe, IRecipeState } from '~/types/store'
+import { IRecipeNewForm } from '~/types/forms'
 
 const initialState: IRecipeState = {
   recipes: [],
@@ -30,58 +31,18 @@ export default class RecipeModule extends VuexModule {
   }
 
   @Action({ rawError: true })
-  public async testAdd(): Promise<void> {
+  public async addRecipe(params: IRecipeNewForm): Promise<void> {
+    const { title, impression, recipe, rate, imageUrl } = params
     const id: string = uuidv4()
     const current = Date.now()
-
-    const data: IRecipeTest = {
-      id,
-      title: 'テスト調理レシピ',
-      createdAt: current,
-      updatedAt: current,
-    }
-
-    await firebase
-      .firestore()
-      .collection('recipes')
-      .doc(id)
-      .set(data)
-      .then((res) => {
-        console.log('debug', 'success', res)
-      })
-      .catch((err: any) => {
-        throw err
-      })
-  }
-
-  @Action({ rawError: true })
-  public async recipeAdd({ params, imageData }: any): Promise<void> {
-    const id: string = uuidv4()
-    const current = Date.now()
-    let resultUrl: any = ''
-    const { title, impressions, recipe, rate } = params
-    const metadata = { contentType: imageData.type }
-    const storage = firebase.storage()
-    const storageDoc = storage.ref().child('recipes/' + id + '/images/' + imageData.value.name)
-    await storageDoc
-      .put(imageData.value, metadata)
-      .then(async () => {
-        // Get upload image data URL
-        await storageDoc.getDownloadURL().then((res) => {
-          resultUrl = res
-        })
-      })
-      .catch((err: any) => {
-        console.log(err)
-      })
 
     const req: IRecipe = {
       id,
       title,
-      impressions,
+      impression,
       recipe,
       rate,
-      imageUrl: resultUrl,
+      imageUrl,
       createdAt: current,
       updatedAt: current,
     }
@@ -91,10 +52,34 @@ export default class RecipeModule extends VuexModule {
       .collection('recipes')
       .doc(id)
       .set(req)
-      .then((res) => {
-        console.log('debug', 'success', res)
+      .catch((err: Error) => {
+        throw err
       })
-      .catch((err: any) => {
+  }
+
+  @Action({ rawError: true })
+  public async uploadImage(imageData: File | undefined): Promise<string> {
+    if (!imageData) {
+      const err = new Error('imageData is undefined')
+      return Promise.reject(err)
+    }
+
+    const uuid: string = uuidv4()
+    const metadata: firebase.storage.UploadMetadata = {
+      contentType: imageData.type,
+    }
+
+    const storagePath: string = ['recipes', uuid].join('/')
+    const storageDoc: firebase.storage.Reference = firebase.storage().ref().child(storagePath)
+
+    return await storageDoc
+      .put(imageData, metadata)
+      .then(
+        async (): Promise<string> => {
+          return await storageDoc.getDownloadURL()
+        }
+      )
+      .catch((err: Error) => {
         throw err
       })
   }
