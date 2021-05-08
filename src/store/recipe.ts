@@ -32,6 +32,52 @@ export default class RecipeModule extends VuexModule {
   }
 
   @Action({ rawError: true })
+  public async listRecipe(): Promise<void> {
+    await firebase
+      .firestore()
+      .collection('recipes')
+      .get()
+      .then((res: firebase.firestore.QuerySnapshot<firebase.firestore.DocumentData>) => {
+        const recipes: IRecipe[] = []
+
+        res.forEach((doc: firebase.firestore.QueryDocumentSnapshot<firebase.firestore.DocumentData>): void => {
+          const {
+            id,
+            title,
+            impression,
+            recipe,
+            rate,
+            imageUrl,
+            createdBy,
+            updatedBy,
+            createdAt,
+            updatedAt,
+          } = doc.data()
+
+          const r: IRecipe = {
+            id,
+            title,
+            impression,
+            recipe,
+            rate,
+            imageUrl,
+            createdBy,
+            updatedBy,
+            createdAt,
+            updatedAt,
+          }
+
+          recipes.push(r)
+        })
+
+        this.setRecipes(recipes)
+      })
+      .catch((err: Error) => {
+        throw err
+      })
+  }
+
+  @Action({ rawError: true })
   public async addRecipe(params: IRecipeNewForm): Promise<void> {
     const { title, impression, recipe, rate, imageUrl } = params
     const id: string = uuidv4()
