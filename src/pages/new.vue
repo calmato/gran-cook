@@ -35,7 +35,7 @@
     <div class="text-center">
       <v-dialog v-model="dialog" width="500">
         <template #activator="{ on, attrs }">
-          <v-btn large v-bind="attrs" color="#FFC107" dark v-on="on" @click="hundleSubmit"> レシピを登録 </v-btn>
+          <v-btn large v-bind="attrs" color="#FFC107" dark v-on="on" @click="handleSubmit"> レシピを登録 </v-btn>
         </template>
 
         <v-card>
