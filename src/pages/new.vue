@@ -30,7 +30,7 @@
           ></v-file-input>
         </v-col>
       </v-row>
-      <img v-if="uploadImageUrl" :src="uploadImageUrl" width="auto" height="200" />
+      <img v-if="inputFile" :src="inputFile" width="auto" height="200" />
     </v-container>
     <div class="text-center">
       <v-btn large color="#FFC107" dark @click="hundleSubmit"> レシピを登録 </v-btn>
@@ -45,9 +45,8 @@ import { RecipeStore } from '~/store'
 
 export default defineComponent({
   setup() {
-    const inputImage = ref<string>('')
-    const uploadImageUrl = ref<any>('')
-    const imageData = ref<File>()
+    const inputFile = ref<string | ArrayBuffer | null>()
+    const fileData = ref<File>()
     const formData = reactive<IRecipeNewForm>({
       title: '',
       impression: '',
@@ -57,24 +56,25 @@ export default defineComponent({
     })
 
     const onImagePicked = (file: File) => {
-      imageData.value = file
-      console.log(imageData)
-      if (file !== undefined && file !== null) {
-        if (file.name.lastIndexOf('.') <= 0) {
-          return
-        }
-        const fr = new FileReader()
-        fr.readAsDataURL(file)
-        fr.addEventListener('load', () => {
-          uploadImageUrl.value = fr.result
-        })
-      } else {
-        uploadImageUrl.value = ''
+      fileData.value = file
+      if (!file) {
+        inputFile.value = null
+        return
       }
+
+      if (file.name.lastIndexOf('.') <= 0) {
+        return
+      }
+
+      const fr = new FileReader()
+      fr.readAsDataURL(file)
+      fr.addEventListener('load', () => {
+        inputFile.value = fr.result
+      })
     }
 
     const hundleSubmit = async () => {
-      await RecipeStore.uploadImage(imageData.value)
+      await RecipeStore.uploadImage(fileData.value)
         .then(
           async (imageUrl: string): Promise<void> => {
             formData.imageUrl = imageUrl
@@ -88,10 +88,10 @@ export default defineComponent({
     }
 
     return {
-      inputImage,
-      uploadImageUrl,
-      onImagePicked,
+      inputFile,
+      fileData,
       formData,
+      onImagePicked,
       hundleSubmit,
     }
   },
