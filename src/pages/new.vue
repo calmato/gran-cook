@@ -39,12 +39,14 @@
 </template>
 
 <script lang="ts">
-import { defineComponent, reactive, ref } from '@nuxtjs/composition-api'
+import { defineComponent, reactive, ref, SetupContext } from '@nuxtjs/composition-api'
 import { IRecipeNewForm } from '~/types/forms'
 import { RecipeStore } from '~/store'
 
 export default defineComponent({
-  setup() {
+  setup(_, { root }: SetupContext) {
+    const router = root.$router
+
     const inputFile = ref<string | ArrayBuffer | null>()
     const fileData = ref<File>()
     const formData = reactive<IRecipeNewForm>({
@@ -75,13 +77,13 @@ export default defineComponent({
 
     const handleSubmit = async () => {
       await RecipeStore.uploadImage(fileData.value)
-        .then(
-          async (imageUrl: string): Promise<void> => {
-            formData.imageUrl = imageUrl
-
-            return await RecipeStore.addRecipe(formData)
-          }
-        )
+        .then(async (imageUrl: string) => {
+          formData.imageUrl = imageUrl
+          return await RecipeStore.createRecipe(formData)
+        })
+        .then(() => {
+          router.push('/')
+        })
         .catch((err: Error) => {
           console.log('debug', formData, err)
         })

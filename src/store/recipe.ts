@@ -26,6 +26,11 @@ export default class RecipeModule extends VuexModule {
     this.recipes = recipes
   }
 
+  @Mutation
+  private addRecipe(recipe: IRecipe): void {
+    this.recipes.push(recipe)
+  }
+
   @Action({})
   public factory(): void {
     this.setRecipes(initialState.recipes)
@@ -78,7 +83,7 @@ export default class RecipeModule extends VuexModule {
   }
 
   @Action({ rawError: true })
-  public async addRecipe(params: IRecipeNewForm): Promise<void> {
+  public async createRecipe(params: IRecipeNewForm): Promise<void> {
     const { title, impression, recipe, rate, imageUrl } = params
     const id: string = uuidv4()
     const current = Date.now()
@@ -101,6 +106,9 @@ export default class RecipeModule extends VuexModule {
       .collection('recipes')
       .doc(id)
       .set(req)
+      .then(() => {
+        this.addRecipe(req)
+      })
       .catch((err: Error) => {
         throw err
       })
