@@ -1,11 +1,11 @@
 <template>
-  <v-row justify="center" align="center">
-    <v-col cols="12" sm="6" md="4">
-      <v-card v-for="recipe in recipes" :key="recipe.id" hover @click="handleClick(recipe)">
+  <v-row no-gutters>
+    <v-col v-for="recipe in recipes" :key="recipe.id" cols="12" sm="6" md="4">
+      <v-card tile hover outlined @click="handleClick(recipe)">
         <v-card-title class="headline">{{ recipe.title }}</v-card-title>
         <v-card-text>
           <v-img :src="recipe.imageUrl" max-height="200" contain />
-          <v-rating background-color="grey lighten-2" color="warning" size="24" :value="3" readonly />
+          <v-rating background-color="grey lighten-2" color="warning" size="24" :value="recipe.rate" readonly />
           <p>{{ recipe.impression }}</p>
         </v-card-text>
         <v-card-actions>
