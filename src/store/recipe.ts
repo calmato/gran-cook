@@ -1,6 +1,7 @@
 import { Module, VuexModule, Mutation, Action } from 'vuex-module-decorators'
 import { v4 as uuidv4 } from 'uuid'
 import firebase from '~/plugins/firebase'
+import { AuthStore } from '~/store'
 import { IRecipe, IRecipeState } from '~/types/store'
 import { IRecipeNewForm } from '~/types/forms'
 
@@ -43,6 +44,8 @@ export default class RecipeModule extends VuexModule {
       recipe,
       rate,
       imageUrl,
+      createdBy: AuthStore.getId,
+      updatedBy: AuthStore.getId,
       createdAt: current,
       updatedAt: current,
     }
