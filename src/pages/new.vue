@@ -22,7 +22,7 @@
         </v-col>
         <v-col cols="12" md="4" class="my-2">
           <v-file-input
-            accept="image/png, image/jpeg"
+            accept="image/*"
             label="画像を選択"
             filled
             prepend-icon="mdi-camera"
