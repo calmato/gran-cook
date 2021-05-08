@@ -26,6 +26,14 @@
             <v-list-item-title>{{ item.title }}</v-list-item-title>
           </v-list-item-content>
         </v-list-item>
+        <v-list-item link @click="handleLogout">
+          <v-list-item-icon>
+            <v-icon>mdi-exit-to-app</v-icon>
+          </v-list-item-icon>
+          <v-list-item-content>
+            <v-list-item-title>ログアウト</v-list-item-title>
+          </v-list-item-content>
+        </v-list-item>
       </v-list>
     </v-navigation-drawer>
     <v-main>
@@ -38,11 +46,19 @@
 
 <script lang="ts">
 import { computed, defineComponent, ref, SetupContext, watch } from '@nuxtjs/composition-api'
+import { AuthStore } from '~/store'
 
 export default defineComponent({
   setup(_, { root }: SetupContext) {
+    const router = root.$router
+
     const title = ref<string>('')
     const current = computed(() => root.$route.path)
+
+    const items = [
+      { title: 'レシピを調べる', icon: 'mdi-magnify', link: '/' },
+      { title: 'レシピ登録', icon: 'mdi-plus-box', link: '/new' },
+    ]
 
     switch (current.value) {
       case '/':
@@ -63,16 +79,17 @@ export default defineComponent({
           break
       }
     })
+
+    const handleLogout = (): void => {
+      AuthStore.logout()
+      router.push('/signin')
+    }
+
     return {
       title,
-      items: [
-        { title: 'レシピを調べる', icon: 'mdi-magnify', link: '/' },
-        { title: 'レシピ登録', icon: 'mdi-plus-box', link: '/new' },
-        { title: 'ログアウト', icon: 'mdi-exit-to-app', link: '' },
-      ],
+      items,
+      handleLogout,
     }
   },
 })
 </script>
-
-function comptued(arg0: () => string) { throw new Error('Function not implemented.') }
