@@ -33,7 +33,24 @@
       <img v-if="inputFile" :src="inputFile" width="auto" height="200" />
     </v-container>
     <div class="text-center">
-      <v-btn large color="#FFC107" dark @click="handleSubmit"> レシピを登録 </v-btn>
+      <v-dialog v-model="dialog" width="500">
+        <template #activator="{ on, attrs }">
+          <v-btn large v-bind="attrs" color="#FFC107" dark v-on="on" @click="hundleSubmit"> レシピを登録 </v-btn>
+        </template>
+
+        <v-card>
+          <v-card-title class="headline grey lighten-2"> Status </v-card-title>
+
+          <v-card-text> Registeration has been completed </v-card-text>
+
+          <v-divider></v-divider>
+
+          <v-card-actions>
+            <v-spacer></v-spacer>
+            <v-btn color="primary" text @click="dialog = false"> I accept </v-btn>
+          </v-card-actions>
+        </v-card>
+      </v-dialog>
     </div>
   </v-form>
 </template>
@@ -56,6 +73,8 @@ export default defineComponent({
       rate: 3,
       imageUrl: '',
     })
+
+    const dialog = false
 
     const onImagePicked = (file: File) => {
       fileData.value = file
@@ -91,6 +110,7 @@ export default defineComponent({
 
     return {
       inputFile,
+      dialog,
       fileData,
       formData,
       onImagePicked,
