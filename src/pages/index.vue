@@ -29,7 +29,6 @@ import { defineComponent } from '@nuxtjs/composition-api'
 import { RecipeStore } from '~/store'
 
 export default defineComponent({
-  layout: 'sidebar',
   setup() {
     const handleSubmit = async () => {
       await RecipeStore.testAdd().catch((err: Error) => {

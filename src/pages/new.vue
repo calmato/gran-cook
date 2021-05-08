@@ -44,7 +44,6 @@ import { IRecipeNewForm } from '~/types/forms'
 import { RecipeStore } from '~/store'
 
 export default defineComponent({
-  layout: 'sidebar',
   setup() {
     const inputImage = ref<string>('')
     const uploadImageUrl = ref<any>('')
