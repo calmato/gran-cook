@@ -33,24 +33,7 @@
       <img v-if="inputFile" :src="inputFile" width="auto" height="200" />
     </v-container>
     <div class="text-center">
-      <v-dialog v-model="dialog" width="500">
-        <template #activator="{ on, attrs }">
-          <v-btn large v-bind="attrs" color="#FFC107" dark v-on="on" @click="handleSubmit"> レシピを登録 </v-btn>
-        </template>
-
-        <v-card>
-          <v-card-title class="headline grey lighten-2"> Status </v-card-title>
-
-          <v-card-text> Registeration has been completed </v-card-text>
-
-          <v-divider></v-divider>
-
-          <v-card-actions>
-            <v-spacer></v-spacer>
-            <v-btn color="primary" text @click="dialog = false"> I accept </v-btn>
-          </v-card-actions>
-        </v-card>
-      </v-dialog>
+      <v-btn large color="#FFC107" dark v-on="on" @click="handleSubmit"> レシピを登録 </v-btn>
     </div>
   </v-form>
 </template>
@@ -73,8 +56,6 @@ export default defineComponent({
       rate: 3,
       imageUrl: '',
     })
-
-    const dialog = false
 
     const onImagePicked = (file: File) => {
       fileData.value = file
@@ -101,16 +82,17 @@ export default defineComponent({
           return await RecipeStore.createRecipe(formData)
         })
         .then(() => {
+          alert('レシピの追加に成功しました')
           router.push('/')
         })
         .catch((err: Error) => {
+          alert('レシピの追加に失敗しました\n画像が選択されているか確認してください')
           console.log('debug', formData, err)
         })
     }
 
     return {
       inputFile,
-      dialog,
       fileData,
       formData,
       onImagePicked,
