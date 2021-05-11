@@ -33,7 +33,7 @@
 </template>
 
 <script lang="ts">
-import { computed, ComputedRef, defineComponent, onMounted, reactive, ref, SetupContext } from '@nuxtjs/composition-api'
+import { computed, ComputedRef, defineComponent, onMounted, ref, SetupContext } from '@nuxtjs/composition-api'
 import { RecipeStore } from '~/store'
 import { IRecipe } from '~/types/store'
 
