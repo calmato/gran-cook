@@ -6,7 +6,9 @@
         <v-card-text>
           <v-rating :value="recipe.rate" background-color="grey lighten-2" color="warning" readonly size="24" />
         </v-card-text>
-        <v-img :src="recipe.imageUrl" max-height="300" contain />
+        <v-row justify="center">
+          <v-img :src="recipe.imageUrl" max-width="600" max-height="300" contain />
+        </v-row>
         <v-card-title>感想</v-card-title>
         <v-card-text>{{ recipe.impression }}</v-card-text>
         <v-card-title>レシピ</v-card-title>
