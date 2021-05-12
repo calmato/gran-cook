@@ -1,14 +1,23 @@
 <template>
   <v-row no-gutters>
-    <v-dialog v-model="showDialog" width="800px" transition="dialog-bottom-transition">
-      <v-card>
-        <v-card-title>{{ recipe.title }}</v-card-title>
-        <v-card-text>
-          <v-rating :value="recipe.rate" background-color="grey lighten-2" color="warning" readonly size="24" />
+    <v-dialog v-model="showDialog" scrollable>
+      <v-card class="mx-auto">
+        <v-toolbar color="primary" dark>
+          {{ recipe.title }}
+          <v-spacer />
+          <v-rating
+            :value="recipe.rate"
+            background-color="grey lighten-2"
+            color="warning"
+            readonly
+            dense
+            :small="$vuetify.breakpoint.xs"
+            :medium="!$vuetify.breakpoint.xs"
+          />
+        </v-toolbar>
+        <v-card-text class="py-2">
+          <v-img :src="recipe.imageUrl" max-height="300" contain />
         </v-card-text>
-        <v-row justify="center">
-          <v-img :src="recipe.imageUrl" max-width="600" max-height="300" contain />
-        </v-row>
         <v-card-title>感想</v-card-title>
         <v-card-text>{{ recipe.impression }}</v-card-text>
         <v-card-title>レシピ</v-card-title>
@@ -23,12 +32,9 @@
         <v-card-title class="headline">{{ omitString(item.title, 16) }}</v-card-title>
         <v-card-text>
           <v-img :src="item.imageUrl" max-height="200" contain />
-          <v-rating background-color="grey lighten-2" color="warning" size="24" :value="item.rate" readonly />
+          <v-rating background-color="grey lighten-2" color="warning" medium :value="item.rate" readonly />
           <p>{{ omitString(item.impression, 18) }}</p>
         </v-card-text>
-        <v-card-actions>
-          <v-spacer />
-        </v-card-actions>
       </v-card>
     </v-col>
   </v-row>
