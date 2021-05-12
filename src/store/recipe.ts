@@ -3,7 +3,7 @@ import { v4 as uuidv4 } from 'uuid'
 import firebase from '~/plugins/firebase'
 import { AuthStore } from '~/store'
 import { IRecipe, IRecipeState } from '~/types/store'
-import { IRecipeNewForm } from '~/types/forms'
+import { IRecipeEditForm, IRecipeNewForm } from '~/types/forms'
 
 const initialState: IRecipeState = {
   recipes: [],
@@ -29,6 +29,16 @@ export default class RecipeModule extends VuexModule {
   @Mutation
   private addRecipe(recipe: IRecipe): void {
     this.recipes.push(recipe)
+  }
+
+  @Mutation
+  private changeRecipe(recipe: IRecipe): void {
+    const index: number = this.recipes.indexOf(recipe)
+    if (index < 0) {
+      return
+    }
+
+    this.recipes.splice(index, 1, recipe)
   }
 
   @Action({})
@@ -108,6 +118,38 @@ export default class RecipeModule extends VuexModule {
       .set(req)
       .then(() => {
         this.addRecipe(req)
+      })
+      .catch((err: Error) => {
+        throw err
+      })
+  }
+
+  @Action({ rawError: true })
+  public async updateRecipe({ params, value }: { params: IRecipeEditForm; value: IRecipe }): Promise<IRecipe> {
+    const { title, impression, recipe, rate, imageUrl } = params
+    const current = Date.now()
+
+    const req: IRecipe = {
+      id: value.id,
+      title,
+      impression,
+      recipe,
+      rate,
+      imageUrl,
+      createdBy: value.createdBy,
+      updatedBy: AuthStore.getId,
+      createdAt: value.createdAt,
+      updatedAt: current,
+    }
+
+    return await firebase
+      .firestore()
+      .collection('recipes')
+      .doc(value.id)
+      .update(req)
+      .then(() => {
+        this.changeRecipe(req)
+        return req
       })
       .catch((err: Error) => {
         throw err

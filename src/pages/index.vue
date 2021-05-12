@@ -1,7 +1,50 @@
 <template>
   <v-row no-gutters>
     <v-dialog v-model="showDialog" scrollable>
-      <v-card class="mx-auto">
+      <!-- recipe edit form dialog -->
+      <v-card v-if="editableRecipe">
+        <v-toolbar>レシピの編集</v-toolbar>
+        <v-card-text>
+          <v-form>
+            <v-row>
+              <v-col cols="12">
+                <v-text-field v-model="formData.title" label="料理名" single-line full-width></v-text-field>
+              </v-col>
+              <v-col cols="12">
+                <v-textarea v-model="formData.impression" label="感想" full-width single-lin></v-textarea>
+              </v-col>
+              <v-col cols="12">
+                <v-textarea v-model="formData.recipe" label="レシピ" full-width single-line> </v-textarea>
+              </v-col>
+              <v-col cols="12" class="my-2">
+                <v-rating
+                  v-model="formData.rate"
+                  color="#FFC107"
+                  icon-label="custom icon label text {0} of {1}"
+                  hover
+                  size="32"
+                ></v-rating>
+              </v-col>
+              <v-col cols="12" md="4" class="my-2">
+                <v-file-input
+                  accept="image/*"
+                  label="画像を選択"
+                  filled
+                  prepend-icon="mdi-camera"
+                  @change="onImagePicked"
+                ></v-file-input>
+              </v-col>
+            </v-row>
+            <img v-if="inputFile" :src="inputFile" width="auto" height="200" />
+            <v-card-actions class="justify-end">
+              <v-btn color="error" @click="handleCancel">Cancel</v-btn>
+              <v-btn color="#FFC107" dark @click="handleSubmit">Save</v-btn>
+            </v-card-actions>
+          </v-form>
+        </v-card-text>
+      </v-card>
+      <!-- recipe detail dialog -->
+      <v-card v-else class="mx-auto">
         <v-toolbar color="primary" dark>
           {{ recipe.title }}
           <v-spacer />
@@ -23,10 +66,12 @@
         <v-card-title>レシピ</v-card-title>
         <v-card-text>{{ recipe.recipe }}</v-card-text>
         <v-card-actions class="justify-end">
-          <v-btn text @click="handleCloseDialog">Close</v-btn>
+          <v-btn class="info" @click="handleEdit">Edit</v-btn>
+          <v-btn class="primary" @click="handleCloseDialog">Close</v-btn>
         </v-card-actions>
       </v-card>
     </v-dialog>
+    <!-- recipe list -->
     <v-col v-for="item in recipes" :key="item.id" cols="12" sm="6" md="4">
       <v-card hover tile outlined @click="handleClick(item)">
         <v-card-title class="headline">{{ omitString(item.title, 16) }}</v-card-title>
@@ -41,8 +86,9 @@
 </template>
 
 <script lang="ts">
-import { computed, ComputedRef, defineComponent, onMounted, ref, SetupContext } from '@nuxtjs/composition-api'
+import { computed, ComputedRef, defineComponent, onMounted, reactive, ref, SetupContext } from '@nuxtjs/composition-api'
 import { RecipeStore } from '~/store'
+import { IRecipeEditForm } from '~/types/forms'
 import { IRecipe } from '~/types/store'
 
 export default defineComponent({
@@ -62,8 +108,18 @@ export default defineComponent({
       updatedAt: 0,
     }
 
+    const editableRecipe = ref<boolean>(false)
     const showDialog = ref<boolean>(false)
     const recipe = ref<IRecipe>({ ...initialRecipe })
+    const inputFile = ref<string | ArrayBuffer | null>()
+    const fileData = ref<File>()
+    const formData = reactive<IRecipeEditForm>({
+      title: '',
+      impression: '',
+      recipe: '',
+      rate: 3,
+      imageUrl: '',
+    })
 
     const recipes: ComputedRef<IRecipe[]> = computed(() => store.getters['recipe/getRecipes'])
 
@@ -81,23 +137,78 @@ export default defineComponent({
       }
     }
 
-    const handleClick = (item: IRecipe) => {
+    const onImagePicked = (file: File): void => {
+      fileData.value = file
+      if (!file) {
+        inputFile.value = null
+        return
+      }
+
+      if (file.name.lastIndexOf('.') <= 0) {
+        return
+      }
+
+      const fr = new FileReader()
+      fr.readAsDataURL(file)
+      fr.addEventListener('load', () => {
+        inputFile.value = fr.result
+      })
+    }
+
+    const handleEdit = (): void => {
+      formData.title = recipe.value.title
+      formData.impression = recipe.value.impression
+      formData.recipe = recipe.value.recipe
+      formData.rate = recipe.value.rate
+      formData.imageUrl = recipe.value.imageUrl
+      editableRecipe.value = true
+    }
+
+    const handleSubmit = async (): Promise<void> => {
+      await RecipeStore.updateRecipe({
+        params: formData,
+        value: recipe.value,
+      })
+        .then((res: IRecipe) => {
+          recipe.value = res
+          editableRecipe.value = false
+        })
+        .catch((err: Error) => {
+          console.log('failure', err)
+        })
+    }
+
+    const handleCancel = (): void => {
+      editableRecipe.value = false
+    }
+
+    const handleClick = (item: IRecipe): void => {
       recipe.value = { ...item }
+      editableRecipe.value = false
       showDialog.value = true
     }
 
-    const handleCloseDialog = () => {
+    const handleCloseDialog = (): void => {
       showDialog.value = false
+      editableRecipe.value = false
       recipe.value = { ...initialRecipe }
     }
 
     return {
       recipe,
       recipes,
+      editableRecipe,
+      fileData,
+      formData,
+      inputFile,
       omitString,
       showDialog,
+      handleCancel,
       handleClick,
       handleCloseDialog,
+      handleEdit,
+      handleSubmit,
+      onImagePicked,
     }
   },
 })
