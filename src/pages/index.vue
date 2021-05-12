@@ -176,10 +176,11 @@ export default defineComponent({
     }
 
     const handleSubmit = async (): Promise<void> => {
-      await RecipeStore.updateRecipe({
-        params: formData,
-        value: recipe.value,
-      })
+      await RecipeStore.uploadImage(fileData.value)
+        .then(async (imageUrl: string) => {
+          formData.imageUrl = imageUrl
+          return await RecipeStore.updateRecipe({ params: formData, value: recipe.value })
+        })
         .then((res: IRecipe) => {
           recipe.value = res
           editableRecipe.value = false

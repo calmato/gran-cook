@@ -170,7 +170,7 @@ export default class RecipeModule extends VuexModule {
   public async deleteRecipe(recipeId: string): Promise<void> {
     await firebase
       .firestore()
-      .collection('recipe')
+      .collection('recipes')
       .doc(recipeId)
       .delete()
       .then(() => {
