@@ -6,7 +6,7 @@
           <v-text-field v-model="formData.title" label="料理名" single-line full-width></v-text-field>
         </v-col>
         <v-col cols="12">
-          <v-textarea v-model="formData.impression" label="感想" full-width single-lin></v-textarea>
+          <v-textarea v-model="formData.impression" label="レシピ" full-width single-lin></v-textarea>
         </v-col>
         <v-col cols="12">
           <v-textarea v-model="formData.recipe" label="レシピ" full-width single-line> </v-textarea>
