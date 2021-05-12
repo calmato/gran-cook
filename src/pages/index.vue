@@ -37,7 +37,8 @@
             </v-row>
             <img v-if="inputFile" :src="inputFile" width="auto" height="200" />
             <v-card-actions class="justify-end">
-              <v-btn color="error" @click="handleCancel">Cancel</v-btn>
+              <v-btn color="error" @click="handleDelete">Delete</v-btn>
+              <v-btn color="info" @click="handleCancel">Cancel</v-btn>
               <v-btn color="#FFC107" dark @click="handleSubmit">Save</v-btn>
             </v-card-actions>
           </v-form>
@@ -164,6 +165,16 @@ export default defineComponent({
       editableRecipe.value = true
     }
 
+    const handleDelete = async (): Promise<void> => {
+      await RecipeStore.deleteRecipe(recipe.value.id)
+        .then(() => {
+          handleCloseDialog()
+        })
+        .catch((err: Error) => {
+          console.log('failure', err)
+        })
+    }
+
     const handleSubmit = async (): Promise<void> => {
       await RecipeStore.updateRecipe({
         params: formData,
@@ -206,6 +217,7 @@ export default defineComponent({
       handleCancel,
       handleClick,
       handleCloseDialog,
+      handleDelete,
       handleEdit,
       handleSubmit,
       onImagePicked,

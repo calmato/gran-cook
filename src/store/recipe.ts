@@ -41,6 +41,16 @@ export default class RecipeModule extends VuexModule {
     this.recipes.splice(index, 1, recipe)
   }
 
+  @Mutation
+  private removeRecipe(recipeId: string): void {
+    const index: number = this.recipes.findIndex((item) => item.id === recipeId)
+    if (index === -1) {
+      return
+    }
+
+    this.recipes.splice(index, 1)
+  }
+
   @Action({})
   public factory(): void {
     this.setRecipes(initialState.recipes)
@@ -150,6 +160,21 @@ export default class RecipeModule extends VuexModule {
       .then(() => {
         this.changeRecipe(req)
         return req
+      })
+      .catch((err: Error) => {
+        throw err
+      })
+  }
+
+  @Action({ rawError: true })
+  public async deleteRecipe(recipeId: string): Promise<void> {
+    await firebase
+      .firestore()
+      .collection('recipe')
+      .doc(recipeId)
+      .delete()
+      .then(() => {
+        this.removeRecipe(recipeId)
       })
       .catch((err: Error) => {
         throw err
