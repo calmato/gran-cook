@@ -1,10 +1,11 @@
 <template>
   <v-app dark>
     <v-app-bar absolute app clipped-right color="939393" elevate-on-scroll>
+      <v-app-bar-nav-icon @click="toggle = !toggle"></v-app-bar-nav-icon>
       <v-toolbar-title>{{ title }}</v-toolbar-title>
       <v-spacer></v-spacer>
     </v-app-bar>
-    <v-navigation-drawer app color="#FFA594" left>
+    <v-navigation-drawer v-model="toggle" app color="#FFA594" left>
       <template #prepend>
         <v-list-item two-line>
           <v-list-item-avatar>
@@ -80,6 +81,8 @@ export default defineComponent({
       }
     })
 
+    const toggle = null
+
     const handleLogout = (): void => {
       AuthStore.logout()
       router.push('/signin')
@@ -87,6 +90,7 @@ export default defineComponent({
 
     return {
       title,
+      toggle,
       items,
       handleLogout,
     }
