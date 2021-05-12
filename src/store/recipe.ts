@@ -33,8 +33,8 @@ export default class RecipeModule extends VuexModule {
 
   @Mutation
   private changeRecipe(recipe: IRecipe): void {
-    const index: number = this.recipes.indexOf(recipe)
-    if (index < 0) {
+    const index: number = this.recipes.findIndex((item) => item.id === recipe.id)
+    if (index === -1) {
       return
     }
 
