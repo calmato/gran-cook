@@ -3,7 +3,7 @@
     <v-dialog v-model="showDialog" scrollable>
       <!-- recipe edit form dialog -->
       <v-card v-if="editableRecipe">
-        <v-toolbar>レシピの編集</v-toolbar>
+        <v-toolbar color="#FFA594">レシピの編集</v-toolbar>
         <v-card-text>
           <v-form>
             <v-row>
@@ -45,7 +45,7 @@
       </v-card>
       <!-- recipe detail dialog -->
       <v-card v-else class="mx-auto">
-        <v-toolbar color="primary" dark>
+        <v-toolbar color="#FFA594">
           {{ recipe.title }}
           <v-spacer />
           <v-rating
