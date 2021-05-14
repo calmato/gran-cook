@@ -11,7 +11,7 @@ facebook_profile_image.png![image](https://user-images.githubusercontent.com/277
 
 ### 登録データ
 1. 料理名
-2. 感想
+2. 材料
 3. 料理手順
 4. 評価
 5. 画像
