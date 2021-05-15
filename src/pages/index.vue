@@ -11,7 +11,7 @@
                 <v-text-field v-model="formData.title" label="料理名" single-line full-width></v-text-field>
               </v-col>
               <v-col cols="12">
-                <v-textarea v-model="formData.impression" label="感想" full-width single-lin></v-textarea>
+                <v-textarea v-model="formData.impression" label="材料" full-width single-lin></v-textarea>
               </v-col>
               <v-col cols="12">
                 <v-textarea v-model="formData.recipe" label="レシピ" full-width single-line> </v-textarea>
@@ -62,7 +62,7 @@
         <v-card-text class="py-2">
           <v-img :src="recipe.imageUrl" max-height="300" contain />
         </v-card-text>
-        <v-card-title>感想</v-card-title>
+        <v-card-title>材料</v-card-title>
         <v-card-text>{{ recipe.impression }}</v-card-text>
         <v-card-title>レシピ</v-card-title>
         <v-card-text>{{ recipe.recipe }}</v-card-text>

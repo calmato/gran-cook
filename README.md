@@ -11,7 +11,14 @@ facebook_profile_image.png![image](https://user-images.githubusercontent.com/277
 
 ### 登録データ
 1. 料理名
-2. 感想
+2. 材料
 3. 料理手順
 4. 評価
-5. 画像
+5. 画像 (NN)
+
+### 機能  
+1. レシピの登録  
+2. レシピの編集  
+3. レシピの削除  
+4. ログイン機能 (mail / google)  
+5. ログアウト機能  
