@@ -1,23 +1,17 @@
 <template>
-  <v-container fill-height>
-    <v-layout wrap>
-      <v-row justify="center" align="center">
-        <v-col cols="12">
-          <v-img src="/logo.png" max-height="96px" contain class="mb-8" />
-          <v-card rounded="32">
-            <v-card-title class="justify-center">
-              <h3>ログイン</h3>
-            </v-card-title>
+  <v-container justify="center" align="center">
+    <v-img src="/logo.png" max-height="96px" contain class="mb-8" />
+    <v-card rounded="32">
+      <v-card-title class="justify-center">
+        <h3>ログイン</h3>
+      </v-card-title>
 
-            <v-divider />
+      <v-divider />
 
-            <v-card-text cols="12">
-              <div id="firebaseui-auth-container" />
-            </v-card-text>
-          </v-card>
-        </v-col>
-      </v-row>
-    </v-layout>
+      <v-card-text>
+        <div id="firebaseui-auth-container" />
+      </v-card-text>
+    </v-card>
   </v-container>
 </template>
 
@@ -39,8 +33,8 @@ export default defineComponent({
         signInOptions: [
           firebase.auth.EmailAuthProvider.PROVIDER_ID,
           firebase.auth.GoogleAuthProvider.PROVIDER_ID,
-          firebase.auth.FacebookAuthProvider.PROVIDER_ID,
-          firebase.auth.TwitterAuthProvider.PROVIDER_ID,
+          // firebase.auth.FacebookAuthProvider.PROVIDER_ID,
+          // firebase.auth.TwitterAuthProvider.PROVIDER_ID,
         ],
       }
 
